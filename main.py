@@ -11,7 +11,7 @@ from data import get_dataloader
 device = torch.device("mps" if torch.backends.mps.is_available() else "cuda" if torch.cuda.is_available() else "cpu")
 
 # data loader
-train_loader = get_dataloader('train', batch_size=32, shuffle=True)
+train_loader = get_dataloader('train', batch_size=16, shuffle=True)
 
 # 單字對應成 embedding layer
 # 共用詞表故 src_dict = tgt_dict，都是把這些文字全部對應到
@@ -24,8 +24,8 @@ tgt_embed = nn.Embedding(len(tgt_dict), 512, padding_idx=tgt_dict.pad())
 # Transformer
 pad_idx = tgt_dict.pad()
 bos_idx = tgt_dict.bos()
-encoder = SelfAttentionEncoder(src_embed = src_embed,padding_idx=pad_idx,max_seq_len=1536).to(device)
-decoder = SelfAttentionDecoder(tgt_embed = tgt_embed, tgt_vocab_size=len(tgt_dict) ,bos_idx = bos_idx ,padding_idx = pad_idx ,max_seq_len=1536).to(device)
+encoder = SelfAttentionEncoder(src_embed = src_embed,padding_idx=pad_idx,max_seq_len=1024).to(device)
+decoder = SelfAttentionDecoder(tgt_embed = tgt_embed, tgt_vocab_size=len(tgt_dict) ,bos_idx = bos_idx ,padding_idx = pad_idx ,max_seq_len=1024).to(device)
 
 # setting
 criterion = nn.CrossEntropyLoss(ignore_index=pad_idx, label_smoothing=0.1)
